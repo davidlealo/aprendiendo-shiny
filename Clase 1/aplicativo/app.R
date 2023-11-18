@@ -3,32 +3,38 @@ library(shiny)
 ui <- fluidPage(
 
     
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Aplicación - Calculadora"),
 
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
+            sliderInput("num1",
+                        "Número 1:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            numericInput("num2", "Número 2", value=0)
         ),
 
         mainPanel(
-           plotOutput("distPlot")
+           textOutput("salida1"),
+           textOutput("salida2"),
+           textOutput("salida3")
         )
     )
 )
 
 server <- function(input, output) {
 
-    output$distPlot <- renderPlot({
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        hist(x, breaks = bins, col = 'darkgray', border = 'white',
-             xlab = 'Waiting time to next eruption (in mins)',
-             main = 'Histogram of waiting times')
+    output$salida1 <- renderText({
+      x <- input$num1
+      x
+    })
+    output$salida2 <- renderText({
+      input$num2
+    })
+    
+    output$salida3 <- renderText({
+      input$num1 + as.numeric(input$num2)
     })
 }
 
